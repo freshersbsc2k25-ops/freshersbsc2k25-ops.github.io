@@ -1,0 +1,362 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+    background: #000;
+    cursor: none;
+}
+
+/* Custom Cursor */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffd700, #ff6b35);
+    pointer-events: none;
+    z-index: 9999;
+    transition: all 0.1s ease;
+    box-shadow: 0 0 20px #ffd700;
+}
+
+.cursor.expanded {
+    transform: scale(3);
+    opacity: 0.7;
+}
+
+/* Animated Background */
+.bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+}
+
+/* Glass Container */
+.glass-container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInUp 2s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.main-title {
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 900;
+    background: linear-gradient(45deg, #ffd700, #ff6b35, #d4af37, #ff8c42);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+    text-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+    line-height: 0.9;
+    margin-bottom: 1rem;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+@keyframes textGlow {
+    0% { filter: brightness(1) drop-shadow(0 0 10px #ffd700); }
+    100% { filter: brightness(1.2) drop-shadow(0 0 30px #ffd700); }
+}
+
+.subtitle {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+    margin-bottom: 2rem;
+    animation: pulse 2s ease-in-out infinite;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Interactive Elements */
+.invitation-card {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+    backdrop-filter: blur(15px);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 2rem 0;
+    max-width: 800px;
+    transform: perspective(1000px) rotateX(5deg);
+    transition: all 0.3s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.invitation-card:hover {
+    transform: perspective(1000px) rotateX(0deg) translateY(-10px);
+    box-shadow: 0 30px 60px rgba(255, 215, 0, 0.2);
+    border-color: rgba(255, 215, 0, 0.6);
+}
+
+.invitation-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ffd700, #fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.description {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+/* Epic Countdown */
+.countdown-container {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(139, 0, 0, 0.6));
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: inset 0 0 50px rgba(255, 215, 0, 0.1), 0 0 50px rgba(255, 215, 0, 0.2);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.countdown-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #ffd700;
+    text-shadow: 0 0 10px #ffd700;
+}
+
+.countdown-display {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.countdown-item {
+    background: linear-gradient(145deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 53, 0.2));
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 15px;
+    padding: 1rem;
+    min-width: 120px;
+    text-align: center;
+    transition: all 0.3s ease;
+    animation: countdownPulse 2s ease-in-out infinite;
+}
+
+.countdown-item:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+}
+
+@keyframes countdownPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.countdown-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #ffd700;
+    text-shadow: 0 0 20px #ffd700;
+}
+
+.countdown-label {
+    font-size: 1rem;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Particle Effects */
+.particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffd700;
+    border-radius: 50%;
+    animation: float 6s linear infinite;
+    box-shadow: 0 0 10px #ffd700;
+}
+
+@keyframes float {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh) scale(0);
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scale(1);
+    }
+}
+
+/* Interactive Hands */
+.hands-section {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.hand-emoji {
+    display: inline-block;
+    font-size: 3rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    animation: wave 2s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.2s);
+}
+
+.hand-emoji:hover {
+    transform: scale(1.5) rotate(20deg);
+    filter: drop-shadow(0 0 20px #ffd700);
+}
+
+@keyframes wave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(20deg); }
+    75% { transform: rotate(-20deg); }
+}
+
+/* Music Visualizer */
+.music-visualizer {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 3px;
+    z-index: 100;
+}
+
+.bar {
+    width: 4px;
+    background: linear-gradient(to top, #ff6b35, #ffd700);
+    border-radius: 2px;
+    animation: musicBar 1s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes musicBar {
+    0% { height: 10px; }
+    100% { height: 40px; }
+}
+
+/* Floating Elements */
+.floating-element {
+    position: absolute;
+    opacity: 0.7;
+    animation: floatingMovement 8s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes floatingMovement {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-20px) rotate(5deg); }
+    50% { transform: translateY(-40px) rotate(0deg); }
+    75% { transform: translateY(-20px) rotate(-5deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .countdown-display {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .countdown-item {
+        min-width: 200px;
+    }
+    
+    .invitation-card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+
+/* Loading Animation */
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 1s ease;
+}
+
+.loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-text {
+    font-size: 3rem;
+    color: #ffd700;
+    animation: loadingPulse 2s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
