@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresher's Party 2K25 BSc-I | Epic Celebration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            overflow-x: hidden;
+            background: #000;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffd700, #ff6b35);
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            box-shadow: 0 0 20px #ffd700;
+        }
+
+        .cursor.expanded {
+            transform: scale(3);
+            opacity: 0.7;
+        }
+
+        /* Animated Background */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+        }
+
+        /* Glass Container */
+        .glass-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 2s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(45deg, #ffd700, #ff6b35, #d4af37, #ff8c42);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite, textGlow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+            line-height: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes textGlow {
+            0% { filter: brightness(1) drop-shadow(0 0 10px #ffd700); }
+            100% { filter: brightness(1.2) drop-shadow(0 0 30px #ffd700); }
+        }
+
+        .subtitle {
+            font-size: clamp(1.5rem, 4vw, 3rem);
+            color: #fff;
+            margin-bottom: 2rem;
+            animation: pulse 2s ease-in-out infinite;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Interactive Elements */
+        .invitation-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 107, 53, 0.1));
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            max-width: 800px;
+            transform: perspective(1000px) rotateX(5deg);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .invitation-card:hover {
+            transform: perspective(1000px) rotateX(0deg) translateY(-10px);
+            box-shadow: 0 30px 60px rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        .invitation-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ffd700, #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        /* Epic Countdown */
+        .countdown-container {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(139, 0, 0, 0.6));
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: inset 0 0 50px rgba(255, 215, 0, 0.1), 0 0 50px rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .countdown-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+        }
+
+        .countdown-display {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .countdown-item {
+            background: linear-gradient(145deg, rgba(255, 215, 0, 0.2), rgba(255, 107, 53, 0.2));
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 15px;
+            padding: 1rem;
+            min-width: 120px;
+            text-align: center;
+            transition: all 0.3s ease;
+            animation: countdownPulse 2s ease-in-out infinite;
+        }
+
+        .countdown-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        @keyframes countdownPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .countdown-number {
+            display: block;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ffd700;
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Particle Effects */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 50%;
+            animation: float 6s linear infinite;
+            box-shadow: 0 0 10px #ffd700;
+        }
+
+        @keyframes float {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) scale(0);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1);
+            }
+        }
+
+        /* Interactive Hands */
+        .hands-section {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .hand-emoji {
+            display: inline-block;
+            font-size: 3rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: wave 2s ease-in-out infinite;
+            animation-delay: calc(var(--i) * 0.2s);
+        }
+
+        .hand-emoji:hover {
+            transform: scale(1.5) rotate(20deg);
+            filter: drop-shadow(0 0 20px #ffd700);
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(20deg); }
+            75% { transform: rotate(-20deg); }
+        }
+
+        /* Music Visualizer */
+        .music-visualizer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 3px;
+            z-index: 100;
+        }
+
+        .bar {
+            width: 4px;
+            background: linear-gradient(to top, #ff6b35, #ffd700);
+            border-radius: 2px;
+            animation: musicBar 1s ease-in-out infinite alternate;
+            animation-delay: calc(var(--i) * 0.1s);
+        }
+
+        @keyframes musicBar {
+            0% { height: 10px; }
+            100% { height: 40px; }
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: absolute;
+            opacity: 0.7;
+            animation: floatingMovement 8s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatingMovement {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-40px) rotate(0deg); }
+            75% { transform: translateY(-20px) rotate(-5deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .countdown-display {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .countdown-item {
+                min-width: 200px;
+            }
+            
+            .invitation-card {
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 1s ease;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-text {
+            font-size: 3rem;
+            color: #ffd700;
+            animation: loadingPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes loadingPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader" id="loader">
+        <div class="loading-text">Loading Epic Experience...</div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Animated Background Canvas -->
+    <canvas class="bg-canvas" id="bgCanvas"></canvas>
+
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Main Content -->
+    <div class="glass-container">
+        <div class="hero">
+            <h1 class="main-title">FRESHER'S<br>PARTY<br>2K25</h1>
+            <h2 class="subtitle">BSc-I EPIC CELEBRATION</h2>
+        </div>
+
+        <div class="invitation-card">
+            <div class="invitation-text">🎉 DEAR FRESHERS! 🎉</div>
+            <div class="invitation-text">YOU ARE CORDIALLY INVITED</div>
+            <p class="description">
+                🌟 Welcome to the most EPIC celebration of your academic journey! College life isn't just about textbooks and exams – it's about creating memories that will last a lifetime. 
+                <br><br>
+                ✨ Join us for an unforgettable night where new friendships are born, talents are discovered, and the foundation of your college experience is laid. Dance, laugh, connect, and let loose as we welcome you to our incredible community!
+                <br><br>
+                🚀 Get ready for mind-blowing performances, amazing music, delicious food, and surprises that will make this night legendary. This is YOUR moment to shine!
+            </p>
+        </div>
+
+        <div class="countdown-container">
+            <div class="countdown-title">⏰ COUNTDOWN TO EPIC NIGHT ⏰</div>
+            <div class="countdown-display">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Seconds</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hands-section">
+            <div class="hand-emoji" style="--i: 0">👋</div>
+            <div class="hand-emoji" style="--i: 1">🤚</div>
+            <div class="hand-emoji" style="--i: 2">✋</div>
+            <div class="hand-emoji" style="--i: 3">🖐️</div>
+            <div class="hand-emoji" style="--i: 4">🙌</div>
+            <div class="hand-emoji" style="--i: 5">👏</div>
+        </div>
+    </div>
+
+    <!-- Music Visualizer -->
+    <div class="music-visualizer">
+        <div class="bar" style="--i: 0"></div>
+        <div class="bar" style="--i: 1"></div>
+        <div class="bar" style="--i: 2"></div>
+        <div class="bar" style="--i: 3"></div>
+        <div class="bar" style="--i: 4"></div>
+        <div class="bar" style="--i: 5"></div>
+        <div class="bar" style="--i: 6"></div>
+        <div class="bar" style="--i: 7"></div>
+        <div class="bar" style="--i: 8"></div>
+        <div class="bar" style="--i: 9"></div>
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-element" style="top: 10%; left: 10%; font-size: 2rem;">🎵</div>
+    <div class="floating-element" style="top: 20%; right: 15%; font-size: 1.5rem;">✨</div>
+    <div class="floating-element" style="top: 60%; left: 5%; font-size: 2.5rem;">🎊</div>
+    <div class="floating-element" style="top: 70%; right: 10%; font-size: 1.8rem;">🎈</div>
+    <div class="floating-element" style="top: 30%; right: 5%; font-size: 2rem;">🌟</div>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        document.addEventListener('mousedown', () => cursor.classList.add('expanded'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('expanded'));
+
+        // Animated Background Canvas
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let animationId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class BackgroundEffect {
+            constructor() {
+                this.shapes = [];
+                this.createShapes();
+            }
+
+            createShapes() {
+                for (let i = 0; i < 50; i++) {
+                    this.shapes.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        size: Math.random() * 3 + 1,
+                        speedX: (Math.random() - 0.5) * 2,
+                        speedY: (Math.random() - 0.5) * 2,
+                        hue: Math.random() * 360,
+                        opacity: Math.random() * 0.5 + 0.1
+                    });
+                }
+            }
+
+            update() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                this.shapes.forEach(shape => {
+                    shape.x += shape.speedX;
+                    shape.y += shape.speedY;
+                    shape.hue += 1;
+
+                    if (shape.x < 0 || shape.x > canvas.width) shape.speedX *= -1;
+                    if (shape.y < 0 || shape.y > canvas.height) shape.speedY *= -1;
+
+                    const gradient = ctx.createRadialGradient(shape.x, shape.y, 0, shape.x, shape.y, shape.size * 10);
+                    gradient.addColorStop(0, `hsla(${shape.hue}, 100%, 50%, ${shape.opacity})`);
+                    gradient.addColorStop(1, 'transparent');
+
+                    ctx.fillStyle = gradient;
+                    ctx.beginPath();
+                    ctx.arc(shape.x, shape.y, shape.size * 10, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+
+            animate() {
+                this.update();
+                animationId = requestAnimationFrame(() => this.animate());
+            }
+        }
+
+        const bgEffect = new BackgroundEffect();
+        bgEffect.animate();
+
+        // Particle System
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            setInterval(() => {
+                if (particlesContainer.children.length < 50) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    particlesContainer.appendChild(particle);
+
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.remove();
+                        }
+                    }, 6000);
+                }
+            }, 200);
+        }
+
+        createParticles();
+
+        // Enhanced Countdown Timer
+        const partyDate = new Date('2025-09-20T14:00:00');
+
+        function updateCountdown() {
+            const now = new Date();
+            const difference = partyDate - now;
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                document.querySelector('.countdown-container').innerHTML = `
+                    <div style="font-size: 3rem; color: #ffd700; text-align: center; animation: celebration 2s ease-in-out infinite;">
+                        🎉 THE PARTY HAS STARTED! 🎉
+                    </div>
+      
