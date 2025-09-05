@@ -85,9 +85,9 @@
         --card-border: rgba(0, 0, 0, 0.1);
         --shadow-color: var(--shadow-day-color);
     }
-    .emoji-day { display: none; }
-    body.day-mode .emoji-night { display: none; }
-    body.day-mode .emoji-day { display: inline; }
+    .emoji-day, .text-day { display: none; }
+    body.day-mode .emoji-night, body.day-mode .text-night { display: none; }
+    body.day-mode .emoji-day, body.day-mode .text-day { display: inline; }
 
     /* --- MAIN CONTENT SECTIONS --- */
     .page-section {
@@ -103,6 +103,10 @@
     .page-section.visible {
         opacity: 1;
         transform: translateY(0);
+    }
+    /* FIX: Removes extra space at the bottom of the page */
+    section.page-section:last-of-type {
+        min-height: auto;
     }
 
     .container {
@@ -243,6 +247,113 @@
         line-height: 1.6;
     }
 
+    /* Visit Counter & Excitement Section */
+    .stats-section {
+        margin: 2rem 0;
+        padding: 2rem;
+        background: var(--card-bg);
+        border: 1px solid var(--card-border);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    
+    .visit-counter {
+        text-align: center;
+        margin-bottom: 2rem;
+        font-family: 'Orbitron', sans-serif;
+    }
+    
+    .visit-counter .counter-number {
+        font-size: clamp(1.5rem, 4vw, 2.2rem);
+        color: var(--primary-glow);
+        text-shadow: 0 0 8px var(--primary-glow);
+        font-weight: 800;
+    }
+    
+    .excitement-counter {
+        text-align: center;
+    }
+    
+    .excitement-title {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem;
+        color: var(--secondary-glow);
+        margin-bottom: 1rem;
+        text-shadow: 0 0 6px var(--secondary-glow);
+    }
+    
+    .emoji-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .emoji-btn {
+        background: var(--card-bg);
+        border: 2px solid var(--card-border);
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 1.8rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .emoji-btn:hover {
+        transform: scale(1.1);
+        border-color: var(--primary-glow);
+        box-shadow: 0 0 15px var(--primary-glow);
+    }
+    
+    .emoji-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .emoji-btn .count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background: var(--primary-glow);
+        color: var(--bg-color);
+        border-radius: 50%;
+        min-width: 20px;
+        height: 20px;
+        font-size: 0.7rem;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: scale(0);
+        transition: all 0.3s ease;
+    }
+    
+    .emoji-btn .count.show {
+        opacity: 1;
+        transform: scale(1);
+    }
+    
+    .total-excitement {
+        font-family: 'Space Mono', monospace;
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+    
+    .total-excitement .total-number {
+        color: var(--secondary-glow);
+        font-weight: bold;
+        text-shadow: 0 0 4px var(--secondary-glow);
+    }
+
     footer {
         text-align: center;
         padding: 2rem;
@@ -265,7 +376,7 @@
 
   <canvas id="fluid-canvas"></canvas>
 
-  <section id="hero" class="page-section">
+  <section id="hero" class="page-section visible">
     <main class="container">
       <h1 class="main-title"></h1>
       <p class="subtitle">
@@ -280,7 +391,7 @@
               <span class="emoji-day">🌳😎</span>
           </strong>
           <br><br>
-          <span class="text-night" style="display: none;">
+          <span class="text-night">
               Get ready for an unforgettable night where college life truly begins. Expect electrifying music 🎶, delicious food 🍕🍔, and endless opportunities to meet amazing people. Let's hit the dance floor 🌟 and create stories you'll tell for years to come.
           </span>
           <span class="text-day">
@@ -299,6 +410,28 @@
         <div class="time-box"><div id="hours" class="num">00</div><div class="label">Hours</div></div>
         <div class="time-box"><div id="minutes" class="num">00</div><div class="label">Minutes</div></div>
         <div class="time-box"><div id="seconds" class="num">00</div><div class="label">Seconds</div></div>
+      </div>
+
+      <div class="stats-section">
+        <div class="visit-counter">
+            <div class="counter-number" id="visitCounter">1</div>
+            <div>visits to this party page</div>
+        </div>
+        
+        <div class="excitement-counter">
+            <div class="excitement-title">Show Your Excitement!</div>
+            <div class="emoji-buttons">
+                <button class="emoji-btn" data-emoji="🎉" title="Party Time!"><span role="img" aria-label="Party Popper">🎉</span><span class="count">0</span></button>
+                <button class="emoji-btn" data-emoji="🔥" title="So Hot!"><span role="img" aria-label="Fire">🔥</span><span class="count">0</span></button>
+                <button class="emoji-btn" data-emoji="😍" title="Love It!"><span role="img" aria-label="Heart Eyes">😍</span><span class="count">0</span></button>
+                <button class="emoji-btn" data-emoji="🚀" title="Ready to Go!"><span role="img" aria-label="Rocket">🚀</span><span class="count">0</span></button>
+                <button class="emoji-btn" data-emoji="💃" title="Dance Time!"><span role="img" aria-label="Woman Dancing">💃</span><span class="count">0</span></button>
+                <button class="emoji-btn" data-emoji="🥳" title="Let's Celebrate!"><span role="img" aria-label="Partying Face">🥳</span><span class="count">0</span></button>
+            </div>
+            <div class="total-excitement">
+                Total excitement clicks: <span class="total-number" id="totalClicks">0</span>
+            </div>
+        </div>
       </div>
     </main>
   </section>
@@ -334,7 +467,7 @@
             Karad, Satara, Maharashtra, 415105
         </p>
         <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3800.83382766288!2d74.1869348148807!3d17.3141750880296!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc18606b297a06f%3A0x1d6a6a5d4a1b02b0!2sHotel%20Royal%20Park!5e0!3m2!1sen!2sin!4v1662309874152!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3801.432160938637!2d74.18029831535497!3d17.28994798813702!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc181e7d4d4d4d5%3A0x8e8e8e8e8e8e8e8e!2sHotel%20Royal%20Park!5e0!3m2!1sen!2sin!4v1662362019999!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div>
   </section>
@@ -346,55 +479,106 @@
 
   <script>
     'use strict';
+    
     // --- FLUID SIMULATION SCRIPT ---
-    (function (script) {
+    // FIX: Correctly create and append the script element
+    (function () {
+        const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/gh/PavelDoGreat/WebGL-Fluid-Simulation/script.js';
-        script.onload = () => {
-            // Default is Day Mode
-            window.webGLFluid.config({
+        document.head.appendChild(script);
+    })();
+    
+    // --- APP LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- THEME SWITCHER ---
+        const themeToggle = document.getElementById('checkbox');
+        const fluidConfigs = {
+            night: {
                 SIM_RESOLUTION: 128, DYE_RESOLUTION: 512, CAPTURE_RESOLUTION: 512,
                 DENSITY_DISSIPATION: 0.99, VELOCITY_DISSIPATION: 0.995, PRESSURE: 0.8,
                 PRESSURE_ITERATIONS: 20, CURL: 5, SPLAT_RADIUS: 0.4, SPLAT_FORCE: 6000,
                 SPLAT_COUNT: 4, SHADING: true, COLORFUL: true, PAUSED: false,
+                BACK_COLOR: { r: 0, g: 0, b: 5 }, BLOOM: true, BLOOM_INTENSITY: 0.8, BLOOM_THRESHOLD: 0.6,
+            },
+            day: {
+                SIM_RESOLUTION: 128, DYE_RESOLUTION: 512, CAPTURE_RESOLUTION: 512,
+                DENSITY_DISSIPATION: 0.99, VELOCITY_DISSIPATION: 0.995, PRESSURE: 0.8,
+                PRESSURE_ITERATIONS: 20, CURL: 2, SPLAT_RADIUS: 0.5, SPLAT_FORCE: 5000,
+                SPLAT_COUNT: 3, SHADING: true, COLORFUL: false, PAUSED: false,
                 BACK_COLOR: { r: 234, g: 221, b: 203 }, BLOOM: false,
-            });
-            window.webGLFluid.simulation(document.getElementById('fluid-canvas'));
+            }
         };
-        document.head.appendChild(script);
-    })(document.createElement('script'));
-    
-    // --- APP LOGIC ---
-    document.addEventListener('DOMContentLoaded', () => {
-        // Restore Date
-        const dateOptions = { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric' };
-        document.getElementById("currentDate").textContent = new Date().toLocaleDateString(undefined, dateOptions);
 
-        // Title Animation
-        const titleText = "It's Time for a Freshers Party";
-        const titleElement = document.querySelector('.main-title');
-        titleText.split('').forEach((char, index) => {
-            const span = document.createElement('span');
-            span.textContent = char === ' ' ? '\u00A0' : char;
-            span.style.animationDelay = `${index * 0.05}s`;
-            titleElement.appendChild(span);
+        const applyTheme = (isDay) => {
+            document.body.classList.toggle('day-mode', isDay);
+            themeToggle.checked = isDay;
+            if (window.webGLFluid) {
+                const newConfig = isDay ? fluidConfigs.day : fluidConfigs.night;
+                window.webGLFluid.config(newConfig);
+            }
+        };
+
+        themeToggle.addEventListener('change', () => {
+            const isDay = themeToggle.checked;
+            localStorage.setItem('theme', isDay ? 'day' : 'night');
+            applyTheme(isDay);
         });
-        titleElement.insertAdjacentHTML('beforeend', ` <span class="emoji-night">🎉</span><span class="emoji-day">☀️</span>`);
-        
-        // Check localStorage for saved theme, default to day
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'night') {
-            document.getElementById('checkbox').checked = false;
-            document.body.classList.remove('day-mode');
-            updateTheme(false);
-        } else {
-            document.getElementById('checkbox').checked = true;
-            document.body.classList.add('day-mode');
-            updateTheme(true);
-        }
 
-        // Scroll animations
-        const sections = document.querySelectorAll('.page-section');
-        const observer = new IntersectionObserver(entries => {
+        // Apply saved theme or default to night
+        const savedTheme = localStorage.getItem('theme');
+        // Wait for fluid sim to load before applying theme
+        const checkFluidReady = setInterval(() => {
+            if (window.webGLFluid) {
+                clearInterval(checkFluidReady);
+                window.webGLFluid.simulation(document.getElementById('fluid-canvas'));
+                applyTheme(savedTheme === 'day');
+            }
+        }, 100);
+
+        // --- ANIMATED TITLE ---
+        const mainTitle = document.querySelector('.main-title');
+        const titleText = "Fresher's Party 2K25";
+        mainTitle.innerHTML = titleText
+            .split('')
+            .map((char, i) => `<span style="animation-delay: ${i * 50}ms">${char === ' ' ? ' ' : char}</span>`)
+            .join('');
+
+        // --- CURRENT DATE BANNER ---
+        const dateBanner = document.getElementById('currentDate');
+        const now = new Date();
+        dateBanner.textContent = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+        // --- COUNTDOWN TIMER ---
+        const partyDate = new Date('September 12, 2025 18:00:00').getTime();
+        const countdownElements = {
+            days: document.getElementById('days'),
+            hours: document.getElementById('hours'),
+            minutes: document.getElementById('minutes'),
+            seconds: document.getElementById('seconds'),
+        };
+
+        const updateCountdown = () => {
+            const currentTime = new Date().getTime();
+            const distance = partyDate - currentTime;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                document.querySelector('.countdown').innerHTML = "<div class='subtitle'>The Party is ON!</div>";
+                return;
+            }
+
+            const format = (num) => (num < 10 ? '0' + num : num);
+            countdownElements.days.textContent = format(Math.floor(distance / (1000 * 60 * 60 * 24)));
+            countdownElements.hours.textContent = format(Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
+            countdownElements.minutes.textContent = format(Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)));
+            countdownElements.seconds.textContent = format(Math.floor((distance % (1000 * 60)) / 1000));
+        };
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // --- SCROLL REVEAL ANIMATION ---
+        const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -402,54 +586,65 @@
             });
         }, { threshold: 0.1 });
 
-        sections.forEach(section => observer.observe(section));
-    });
+        document.querySelectorAll('.page-section').forEach(section => observer.observe(section));
 
-    // --- THEME TOGGLE LOGIC ---
-    const updateTheme = (isDayMode) => {
-        document.querySelector('.text-day').style.display = isDayMode ? 'inline' : 'none';
-        document.querySelector('.text-night').style.display = isDayMode ? 'none' : 'inline';
-
-        if (window.webGLFluid) {
-            if (isDayMode) {
-                 window.webGLFluid.config({
-                    DENSITY_DISSIPATION: 0.99, VELOCITY_DISSIPATION: 0.995, CURL: 5,
-                    SPLAT_RADIUS: 0.4, COLORFUL: true, BACK_COLOR: { r: 234, g: 221, b: 203 }, BLOOM: false,
-                });
-            } else {
-                 window.webGLFluid.config({
-                    DENSITY_DISSIPATION: 0.98, VELOCITY_DISSIPATION: 0.99, CURL: 20,
-                    SPLAT_RADIUS: 0.3, COLORFUL: true, BACK_COLOR: { r: 0, g: 0, b: 4 }, BLOOM: true,
-                 });
+        // --- VISIT & EXCITEMENT COUNTERS ---
+        const getDeviceId = () => {
+            let deviceId = localStorage.getItem('deviceId');
+            if (!deviceId) {
+                deviceId = 'device_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+                localStorage.setItem('deviceId', deviceId);
             }
-        }
-    };
-    
-    const toggleSwitch = document.getElementById('checkbox');
-    toggleSwitch.addEventListener('change', (e) => {
-        document.body.classList.toggle('day-mode', e.target.checked);
-        localStorage.setItem('theme', e.target.checked ? 'day' : 'night');
-        updateTheme(e.target.checked);
-    });
+            return deviceId;
+        };
 
-    // --- COUNTDOWN LOGIC ---
-    const partyDate = new Date("2025-09-20T14:00:00");
-    const countdownInterval = setInterval(() => {
-      const diff = partyDate - new Date();
-      if (diff <= 0) { 
-        document.querySelector(".countdown").innerHTML = `<h2 class="section-title" style="margin-bottom:0;">The Party Has Started!</h2>`; 
-        clearInterval(countdownInterval);
-        return; 
-      }
-      const d = Math.floor(diff / 86400000), 
-            h = Math.floor((diff % 86400000) / 3600000), 
-            m = Math.floor((diff % 3600000) / 60000), 
-            s = Math.floor((diff % 60000) / 1000);
-      document.getElementById("days").textContent = d.toString().padStart(2, '0');
-      document.getElementById("hours").textContent = h.toString().padStart(2, '0');
-      document.getElementById("minutes").textContent = m.toString().padStart(2, '0');
-      document.getElementById("seconds").textContent = s.toString().padStart(2, '0');
-    }, 1000);
+        const deviceId = getDeviceId();
+        
+        // Visit Counter
+        const visitKey = `totalVisits`; // Changed to a global key for total count
+        let totalVisits = parseInt(localStorage.getItem(visitKey) || '0') + 1;
+        localStorage.setItem(visitKey, totalVisits.toString());
+        document.getElementById('visitCounter').textContent = totalVisits;
+
+        // Excitement Counter
+        const emojiButtons = document.querySelectorAll('.emoji-btn');
+        const totalClicksElement = document.getElementById('totalClicks');
+        
+        const loadEmojiCounts = () => {
+            let totalClicks = 0;
+            emojiButtons.forEach(btn => {
+                const emoji = btn.dataset.emoji;
+                const countKey = `emoji_${emoji}_${deviceId}`;
+                const count = parseInt(localStorage.getItem(countKey) || '0');
+                const countElement = btn.querySelector('.count');
+                countElement.textContent = count;
+                countElement.classList.toggle('show', count > 0);
+                totalClicks += count;
+            });
+            totalClicksElement.textContent = totalClicks;
+        };
+
+        const updateEmojiCount = (emoji) => {
+            const countKey = `emoji_${emoji}_${deviceId}`;
+            let count = (parseInt(localStorage.getItem(countKey) || '0')) + 1;
+            localStorage.setItem(countKey, count.toString());
+            
+            loadEmojiCounts(); // Reload all counts to update UI
+        };
+
+        emojiButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const emoji = btn.dataset.emoji;
+                updateEmojiCount(emoji);
+                
+                // Click animation
+                btn.style.transform = 'scale(1.2)';
+                setTimeout(() => { btn.style.transform = ''; }, 150);
+            });
+        });
+        
+        loadEmojiCounts(); // Initial load
+    });
   </script>
 </body>
 </html>
